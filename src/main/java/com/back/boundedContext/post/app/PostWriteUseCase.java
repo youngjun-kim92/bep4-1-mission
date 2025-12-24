@@ -1,5 +1,6 @@
 package com.back.boundedContext.post.app;
 
+import com.back.boundedContext.member.app.MemberFacade;
 import com.back.boundedContext.member.domain.Member;
 import com.back.boundedContext.post.domain.Post;
 import com.back.boundedContext.post.out.PostRepository;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class PostWriteUseCase {
     private final PostRepository postRepository;
     private final EventPublisher eventPublisher;
+    private final MemberFacade memberFacade;
 
     public long count() {
         return postRepository.count();
@@ -30,7 +32,14 @@ public class PostWriteUseCase {
                 )
         );
 
-        return new RsData<>("201-1", "%d번 글이 생성되었습니다.".formatted(post.getId()), post);
+        String randomSecureTip = memberFacade.getRandomSecureTip();
+
+        return new RsData<>(
+                "201-1",
+                "%d번 글이 생성되었습니다. 보안 팁 : %s"
+                        .formatted(post.getId(), randomSecureTip),
+                post
+        );
     }
 
     public Optional<Post> findById(int id) {
