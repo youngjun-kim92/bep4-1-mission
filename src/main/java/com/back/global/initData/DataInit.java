@@ -1,6 +1,7 @@
 package com.back.global.initData;
 
 import com.back.boundedContext.member.domain.Member;
+import com.back.boundedContext.post.app.PostFacade;
 import com.back.boundedContext.post.domain.Post;
 import com.back.boundedContext.member.app.MemberFacade;
 import com.back.boundedContext.post.app.PostWriteUseCase;
@@ -17,15 +18,17 @@ public class DataInit {
     private final DataInit self;
     private final MemberFacade memberFacade;
     private final PostWriteUseCase postWriteUseCase;
+    private final PostFacade postFacade;
 
     public DataInit(
             @Lazy DataInit self,
             MemberFacade memberFacade,
-            PostWriteUseCase postWriteUseCase
-    ) {
+            PostWriteUseCase postWriteUseCase,
+            PostFacade postFacade) {
         this.self = self;
         this.memberFacade = memberFacade;
         this.postWriteUseCase = postWriteUseCase;
+        this.postFacade = postFacade;
     }
 
     @Bean
@@ -57,12 +60,12 @@ public class DataInit {
         Member user2Member = memberFacade.findByUsername("user2").get();
         Member user3Member = memberFacade.findByUsername("user3").get();
 
-        Post post1 = postWriteUseCase.write(user1Member, "제목1", "내용1");
-        Post post2 = postWriteUseCase.write(user1Member, "제목2", "내용2");
-        Post post3 = postWriteUseCase.write(user1Member, "제목3", "내용3");
-        Post post4 = postWriteUseCase.write(user2Member, "제목4", "내용4");
-        Post post5 = postWriteUseCase.write(user2Member, "제목5", "내용5");
-        Post post6 = postWriteUseCase.write(user3Member, "제목6", "내용6");
+        Post post1 = postFacade.write(user1Member, "제목1", "내용1").getData();
+        Post post2 = postFacade.write(user1Member, "제목2", "내용2").getData();
+        Post post3 = postFacade.write(user1Member, "제목3", "내용3").getData();
+        Post post4 = postFacade.write(user2Member, "제목4", "내용4").getData();
+        Post post5 = postFacade.write(user2Member, "제목5", "내용5").getData();
+        Post post6 = postFacade.write(user3Member, "제목6", "내용6").getData();
     }
 
     @Transactional
