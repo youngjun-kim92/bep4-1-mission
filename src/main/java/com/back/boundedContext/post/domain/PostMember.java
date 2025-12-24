@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "POST_MEMBER")
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 public class PostMember extends ReplicaMember {
     public PostMember(int id, LocalDateTime createDate, LocalDateTime modifyDate, String username, String password, String nickname, int activityScore) {
         super(id, createDate, modifyDate, username, password, nickname, activityScore);

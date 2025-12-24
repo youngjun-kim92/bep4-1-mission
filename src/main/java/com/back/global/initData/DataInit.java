@@ -3,8 +3,8 @@ package com.back.global.initData;
 import com.back.boundedContext.member.app.MemberFacade;
 import com.back.boundedContext.member.domain.Member;
 import com.back.boundedContext.post.app.PostFacade;
-import com.back.boundedContext.post.app.PostWriteUseCase;
 import com.back.boundedContext.post.domain.Post;
+import com.back.boundedContext.post.domain.PostMember;
 import com.back.global.rsData.RsData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -18,17 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataInit {
     private final DataInit self;
     private final MemberFacade memberFacade;
-    private final PostWriteUseCase postWriteUseCase;
     private final PostFacade postFacade;
 
     public DataInit(
             @Lazy DataInit self,
             MemberFacade memberFacade,
-            PostWriteUseCase postWriteUseCase,
-            PostFacade postFacade) {
+            PostFacade postFacade
+    ) {
         this.self = self;
         this.memberFacade = memberFacade;
-        this.postWriteUseCase = postWriteUseCase;
         this.postFacade = postFacade;
     }
 
@@ -55,11 +53,11 @@ public class DataInit {
 
     @Transactional
     public void makeBasePosts() {
-        if (postWriteUseCase.count() > 0) return;
+        if (postFacade.count() > 0) return;
 
-        Member user1Member = memberFacade.findByUsername("user1").get();
-        Member user2Member = memberFacade.findByUsername("user2").get();
-        Member user3Member = memberFacade.findByUsername("user3").get();
+        PostMember user1Member = postFacade.findPostMemberByUsername("user1").get();
+        PostMember user2Member = postFacade.findPostMemberByUsername("user2").get();
+        PostMember user3Member = postFacade.findPostMemberByUsername("user3").get();
 
         RsData<Post> post1RsData = postFacade.write(user1Member, "제목1", "내용1");
         log.debug(post1RsData.getMsg());
@@ -82,16 +80,16 @@ public class DataInit {
 
     @Transactional
     public void makeBasePostComments() {
-        Post post1 = postWriteUseCase.findById(1).get();
-        Post post2 = postWriteUseCase.findById(2).get();
-        Post post3 = postWriteUseCase.findById(3).get();
-        Post post4 = postWriteUseCase.findById(4).get();
-        Post post5 = postWriteUseCase.findById(5).get();
-        Post post6 = postWriteUseCase.findById(6).get();
+        Post post1 = postFacade.findById(1).get();
+        Post post2 = postFacade.findById(2).get();
+        Post post3 = postFacade.findById(3).get();
+        Post post4 = postFacade.findById(4).get();
+        Post post5 = postFacade.findById(5).get();
+        Post post6 = postFacade.findById(6).get();
 
-        Member user1Member = memberFacade.findByUsername("user1").get();
-        Member user2Member = memberFacade.findByUsername("user2").get();
-        Member user3Member = memberFacade.findByUsername("user3").get();
+        PostMember user1Member = postFacade.findPostMemberByUsername("user1").get();
+        PostMember user2Member = postFacade.findPostMemberByUsername("user2").get();
+        PostMember user3Member = postFacade.findPostMemberByUsername("user3").get();
 
         if (post1.hasComments()) return;
 

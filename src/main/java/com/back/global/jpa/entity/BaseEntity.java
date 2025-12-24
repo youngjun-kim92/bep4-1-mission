@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-// 모든 엔티티들의 조상
 public abstract class BaseEntity {
     public String getModelTypeCode() {
         return this.getClass().getSimpleName();
