@@ -25,7 +25,6 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Order extends BaseIdAndTime {
     @ManyToOne(fetch = LAZY)
     private MarketMember buyer;
-    private LocalDateTime cancelDate;
     private LocalDateTime requestPaymentDate;
     private LocalDateTime paymentDate;
     private long price;
@@ -63,14 +62,6 @@ public class Order extends BaseIdAndTime {
 
     public boolean isPaid() {
         return paymentDate != null;
-    }
-
-    public boolean isCanceled() {
-        return cancelDate != null;
-    }
-
-    public boolean isPaymentInProgress() {
-        return requestPaymentDate != null && paymentDate == null && cancelDate == null;
     }
 
     public void requestPayment(long pgPaymentAmount) {
