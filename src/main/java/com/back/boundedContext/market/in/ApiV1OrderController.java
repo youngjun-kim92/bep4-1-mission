@@ -2,6 +2,7 @@ package com.back.boundedContext.market.in;
 
 import com.back.boundedContext.market.app.MarketFacade;
 import com.back.boundedContext.market.domain.Order;
+import com.back.boundedContext.market.domain.OrderItem;
 import com.back.global.exception.DomainException;
 import com.back.global.rsData.RsData;
 import com.back.shared.cash.out.CashApiClient;
@@ -70,5 +71,17 @@ public class ApiV1OrderController {
         marketFacade.requestPayment(order, reqBody.amount());
 
         return new RsData<>("202-1", "결제 프로세스가 시작되었습니다.");
+    }
+
+    @GetMapping("/{id}/items")
+    @Transactional(readOnly = true)
+    public List<OrderItemDto> getItems(@PathVariable int id) {
+        return marketFacade
+                .findOrderById(id)
+                .get()
+                .getItems()
+                .stream()
+                .map(OrderItem::toDto)
+                .toList();
     }
 }
